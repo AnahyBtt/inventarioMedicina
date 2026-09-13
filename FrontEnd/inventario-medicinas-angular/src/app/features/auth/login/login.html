@@ -1,0 +1,65 @@
+<div class="login-wrapper">
+  <div class="card login-card">
+    
+    <!-- Login Normal -->
+    <ng-container *ngIf="!requiresMfa">
+      <div class="login-header">
+        <div class="brand-icon" style="margin: 0 auto 15px;">💊</div>
+        <h2 style="font-size:22px; font-weight:700; color:#1f2937; margin:0 0 5px;">Bienvenido</h2>
+        <p style="color:#8a93a3; font-size:14px; margin:0;">Inventario de Medicinas</p>
+      </div>
+      
+      <form class="login-body" [formGroup]="loginForm" (ngSubmit)="onLogin()">
+        <div class="notice danger" *ngIf="errorMessage" style="margin-bottom: 15px; font-size: 13px;">
+          <p>{{ errorMessage }}</p>
+        </div>
+
+        <div style="margin-bottom: 15px; text-align: left;">
+          <label style="display:block; font-size: 12px; font-weight: 600; color: #596273; margin-bottom: 5px;">Correo electrónico</label>
+          <input type="email" formControlName="email" style="width: 100%; border: 1px solid #dfe3ea; border-radius: 8px; padding: 10px 12px; background: #fff;" placeholder="ejemplo@correo.com">
+        </div>
+
+        <div style="margin-bottom: 25px; text-align: left;">
+          <label style="display:block; font-size: 12px; font-weight: 600; color: #596273; margin-bottom: 5px;">Contraseña</label>
+          <input type="password" formControlName="password" style="width: 100%; border: 1px solid #dfe3ea; border-radius: 8px; padding: 10px 12px; background: #fff;" placeholder="••••••••">
+        </div>
+        
+        <button type="submit" class="btn btn-block" [disabled]="loginForm.invalid || loading">
+          {{ loading ? 'Iniciando sesión...' : 'Iniciar Sesión' }}
+        </button>
+
+        <div style="margin-top: 15px;">
+          <a routerLink="/registro" class="link" style="font-size: 13px;">¿No tienes cuenta? Regístrate aquí</a>
+        </div>
+      </form>
+    </ng-container>
+
+    <!-- Verificación MFA -->
+    <ng-container *ngIf="requiresMfa">
+      <div class="login-header">
+        <div class="brand-icon" style="margin: 0 auto 15px;">🛡️</div>
+        <h2 style="font-size:22px; font-weight:700; color:#1f2937; margin:0 0 5px;">Verificación de dos pasos</h2>
+        <p style="color:#8a93a3; font-size:14px; margin:0;">Ingresa el código de seguridad de tu Autenticador o SMS.</p>
+      </div>
+      
+      <form class="login-body" [formGroup]="mfaForm" (ngSubmit)="onVerifyMfa()">
+        <div class="notice danger" *ngIf="errorMessage" style="margin-bottom: 15px; font-size: 13px;">
+          <p>{{ errorMessage }}</p>
+        </div>
+
+        <div style="margin-bottom: 25px; text-align: left;">
+          <label style="display:block; font-size: 12px; font-weight: 600; color: #596273; margin-bottom: 5px;">Código de seguridad</label>
+          <input type="text" formControlName="code" maxlength="6" style="text-align:center; letter-spacing: 5px; font-size: 20px; font-weight: bold; width: 100%; border: 1px solid #dfe3ea; border-radius: 8px; padding: 10px 12px; background: #fff;" placeholder="000000">
+        </div>
+        
+        <button type="submit" class="btn btn-block" [disabled]="mfaForm.invalid || loading">
+          {{ loading ? 'Verificando...' : 'Verificar y Continuar' }}
+        </button>
+      </form>
+    </ng-container>
+
+    <div class="login-footer">
+      <small style="color:#a0a7b4; font-size:11px;">Sistema de control interno &copy; 2026</small>
+    </div>
+  </div>
+</div>
