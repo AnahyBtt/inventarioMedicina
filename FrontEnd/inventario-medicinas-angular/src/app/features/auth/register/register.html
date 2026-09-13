@@ -1,0 +1,49 @@
+<div class="login-wrapper">
+  <div class="card login-card">
+    <div class="login-header">
+      <div class="brand-icon" style="margin: 0 auto 15px;">✚</div>
+      <h2 style="font-size:22px; font-weight:700; color:#1f2937; margin:0 0 5px;">Crear Cuenta</h2>
+      <p style="color:#8a93a3; font-size:14px; margin:0;">Registro de nuevo usuario</p>
+    </div>
+    
+    <form class="login-body" [formGroup]="registerForm" (ngSubmit)="onRegister()">
+      <div class="notice danger" *ngIf="errorMessage" style="margin-bottom: 15px; font-size: 13px;">
+        <p>{{ errorMessage }}</p>
+      </div>
+
+      <div class="grid2" style="margin-bottom: 15px; text-align: left;">
+        <div>
+          <label style="display:block; font-size: 12px; font-weight: 600; color: #596273; margin-bottom: 5px;">Nombre</label>
+          <input type="text" formControlName="given_name" style="width: 100%; border: 1px solid #dfe3ea; border-radius: 8px; padding: 10px 12px; background: #fff;">
+        </div>
+        <div>
+          <label style="display:block; font-size: 12px; font-weight: 600; color: #596273; margin-bottom: 5px;">Apellido</label>
+          <input type="text" formControlName="family_name" style="width: 100%; border: 1px solid #dfe3ea; border-radius: 8px; padding: 10px 12px; background: #fff;">
+        </div>
+      </div>
+
+      <div style="margin-bottom: 15px; text-align: left;">
+        <label style="display:block; font-size: 12px; font-weight: 600; color: #596273; margin-bottom: 5px;">Fecha de nacimiento</label>
+        <input type="date" formControlName="birthdate" style="width: 100%; border: 1px solid #dfe3ea; border-radius: 8px; padding: 10px 12px; background: #fff;">
+      </div>
+
+      <div style="margin-bottom: 15px; text-align: left;">
+        <label style="display:block; font-size: 12px; font-weight: 600; color: #596273; margin-bottom: 5px;">Correo electrónico</label>
+        <input type="email" formControlName="email" style="width: 100%; border: 1px solid #dfe3ea; border-radius: 8px; padding: 10px 12px; background: #fff;">
+      </div>
+
+      <div style="margin-bottom: 25px; text-align: left;">
+        <label style="display:block; font-size: 12px; font-weight: 600; color: #596273; margin-bottom: 5px;">Contraseña</label>
+        <input type="password" formControlName="password" style="width: 100%; border: 1px solid #dfe3ea; border-radius: 8px; padding: 10px 12px; background: #fff;">
+      </div>
+      
+      <button type="submit" class="btn btn-block" [disabled]="registerForm.invalid || loading">
+        {{ loading ? 'Registrando...' : 'Registrarse' }}
+      </button>
+
+      <div style="margin-top: 15px;">
+        <a routerLink="/login" class="link" style="font-size: 13px;">¿Ya tienes cuenta? Inicia sesión aquí</a>
+      </div>
+    </form>
+  </div>
+</div>

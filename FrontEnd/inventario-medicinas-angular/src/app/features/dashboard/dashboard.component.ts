@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { InventarioService } from '../../core/services/inventario.service';
 import { Medicamento } from '../../core/models/models';
+import { Auth } from '../../core/services/auth/auth';
 
 @Component({
  selector:'app-dashboard', standalone:true, imports:[CommonModule,RouterLink],
  template:`
- <div class="page-head"><div><h1>Buenos días, Ana 👋</h1><p>Aquí tienes un resumen de tu inventario.</p></div><a class="btn" routerLink="/medicamentos">＋ Agregar medicamento</a></div>
+ <div class="page-head"><div><h1>{{ greeting }}, {{ profile?.given_name || 'Usuario' }} 👋</h1><p>Aquí tienes un resumen de tu inventario.</p></div><a class="btn" routerLink="/medicamentos">＋ Agregar medicamento</a></div>
  <div class="stats">
    <div class="stat"><span class="ico">💊</span><div><small>Medicamentos</small><strong>{{medicamentos.length}}</strong></div></div>
    <div class="stat"><span class="ico orange">⚠️</span><div><small>Próximos a caducar</small><strong>{{proximos}}</strong></div></div>
@@ -27,6 +28,27 @@ import { Medicamento } from '../../core/models/models';
  </div>`
 })
 export class DashboardComponent implements OnInit {
- private service=inject(InventarioService); medicamentos:Medicamento[]=[]; proximos=0; caducados=0; proximosLista:Medicamento[]=[];
- ngOnInit(){this.service.getMedicamentos().subscribe(m=>{this.medicamentos=m; const hoy=new Date('2026-09-09'); this.proximosLista=m.filter(x=>{const d=(new Date(x.fechaCaducidad).getTime()-hoy.getTime())/86400000;return d>=0&&d<=90}); this.proximos=this.proximosLista.length; this.caducados=m.filter(x=>new Date(x.fechaCaducidad)<hoy).length;});}
+ private service=inject(InventarioService); 
+ private auth = inject(Auth);
+ medicamentos:Medicamento[]=[]; proximos=0; caducados=0; proximosLista:Medicamento[]=[];
+ profile: any = null;
+ greeting: string = 'Buenos días';
+
+ ngOnInit(){
+   this.profile = this.auth.getUserProfile();
+   this.setGreeting();
+
+   this.service.getMedicamentos().subscribe(m=>{this.medicamentos=m; const hoy=new Date('2026-09-09'); this.proximosLista=m.filter(x=>{const d=(new Date(x.fechaCaducidad).getTime()-hoy.getTime())/86400000;return d>=0&&d<=90}); this.proximos=this.proximosLista.length; this.caducados=m.filter(x=>new Date(x.fechaCaducidad)<hoy).length;});
+ }
+
+ private setGreeting() {
+   const hour = new Date().getHours();
+   if (hour >= 5 && hour < 12) {
+     this.greeting = 'Buenos días';
+   } else if (hour >= 12 && hour < 19) {
+     this.greeting = 'Buenas tardes';
+   } else {
+     this.greeting = 'Buenas noches';
+   }
+ }
 }

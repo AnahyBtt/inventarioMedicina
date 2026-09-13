@@ -1,0 +1,24 @@
+<div class="login-wrapper">
+  <div class="card login-card">
+    <div class="login-header">
+      <div class="brand-icon" style="margin: 0 auto 15px;">✉️</div>
+      <h2 style="font-size:22px; font-weight:700; color:#1f2937; margin:0 0 5px;">Verifica tu cuenta</h2>
+      <p style="color:#8a93a3; font-size:14px; margin:0;">Ingresa el código que enviamos a <strong>{{ email }}</strong></p>
+    </div>
+    
+    <form class="login-body" [formGroup]="verifyForm" (ngSubmit)="onVerify()">
+      <div class="notice danger" *ngIf="errorMessage" style="margin-bottom: 15px; font-size: 13px;">
+        <p>{{ errorMessage }}</p>
+      </div>
+
+      <div style="margin-bottom: 25px; text-align: left;">
+        <label style="display:block; font-size: 12px; font-weight: 600; color: #596273; margin-bottom: 5px;">Código de 6 dígitos</label>
+        <input type="text" formControlName="code" maxlength="6" style="text-align:center; letter-spacing: 5px; font-size: 20px; font-weight: bold; width: 100%; border: 1px solid #dfe3ea; border-radius: 8px; padding: 10px 12px; background: #fff;" placeholder="000000">
+      </div>
+      
+      <button type="submit" class="btn btn-block" [disabled]="verifyForm.invalid || loading">
+        {{ loading ? 'Verificando...' : 'Verificar y Continuar' }}
+      </button>
+    </form>
+  </div>
+</div>
